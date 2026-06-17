@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.RateMapper">
+	<resultMap type="Rate" id="rateMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="teacherid" column="teacherid" />
+		<result property="showrate" column="showrate" />
+		<result property="homeworkrate" column="homeworkrate" />
+		<result property="testrate" column="testrate" />
+		<result property="designrate" column="designrate" />
+		<result property="middlerate" column="middlerate" />
+		<result property="endrate" column="endrate" />
+		<result property="lessonid" column="lessonid" />
+		<association property="lesson" column="lessonid" select="getlesson" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{lessonid} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="rateMap">
+		SELECT * from rate WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="name != '' and name != null"> and name LIKE
+			CONCAT(CONCAT('%', #{name}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="Rate"
+		resultMap="rateMap"><![CDATA[  SELECT * from rate tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<select id="getByTeacherId" parameterType="String" resultType="Rate"
+		resultMap="rateMap"><![CDATA[  SELECT * from rate tmp WHERE tmp.teacherid = #{teacherid} ]]>
+	</select>
+	<insert id="insert" parameterType="Rate"><![CDATA[insert into rate( 
+id,teacherid,showrate,homeworkrate,testrate,designrate,middlerate,endrate,lessonid) values (#{id},#{teacherid},#{showrate},#{homeworkrate},#{testrate},#{designrate},#{middlerate},#{endrate},#{lessonid})
+]]></insert>
+	<update id="update" parameterType="Rate"><![CDATA[update rate set 
+id=#{id},teacherid=#{teacherid},showrate=#{showrate},homeworkrate=#{homeworkrate},testrate=#{testrate},designrate=#{designrate},middlerate=#{middlerate},endrate=#{endrate},lessonid=#{lessonid} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from rate  WHERE id = #{id} ]]></delete>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from rate WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+	</delete>
+</mapper>

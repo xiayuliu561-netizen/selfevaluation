@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.SumscoreMapper">
+	<resultMap type="Sumscore" id="sumscoreMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="lesson" column="lesson" />
+		<result property="sumscore" column="sumscore" />
+		<result property="remarks" column="remarks" />
+		<association property="lessonentity" column="lesson" select="getlesson" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{lesson} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="sumscoreMap">
+		SELECT * from sumscore WHERE 1=1
+		<if test="userid != '' and userid != null"> and userid =
+			#{userid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid =
+			#{teacherid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson =
+			#{lesson} </if>
+		<if test="name != '' and name != null"> and name LIKE
+			CONCAT(CONCAT('%', #{name}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="Sumscore"
+		resultMap="sumscoreMap"><![CDATA[  SELECT * from sumscore tmp WHERE tmp.userid = #{userid} ]]>
+	</select>
+	<insert id="insert" parameterType="Sumscore"><![CDATA[insert into sumscore( 
+id,userid,teacherid,lesson,sumscore,remarks) values (#{id},#{userid},#{teacherid},#{lesson},#{sumscore},#{remarks})
+]]></insert>
+	<update id="update" parameterType="Sumscore"><![CDATA[update sumscore set 
+id=#{id},userid=#{userid},teacherid=#{teacherid},lesson=#{lesson},sumscore=#{sumscore},remarks=#{remarks} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from sumscore  WHERE teacherid = #{teacherid} ]]></delete>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from sumscore WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson = #{lesson} </if>
+		<if test="userid != '' and userid != null"> and userid = #{userid} </if>
+	</delete>
+</mapper>

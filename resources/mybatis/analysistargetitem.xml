@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.AnalysisTargetItemMapper">
+	<resultMap type="AnalysisTargetItem" id="analysisTargetItemMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="targetid" column="targetid" />
+		<result property="lessonid" column="lessonid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="methodName" column="method_name" />
+		<result property="weightRate" column="weight_rate" />
+		<result property="coefficient" column="coefficient" />
+		<result property="sortno" column="sortno" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="analysisTargetItemMap">
+		SELECT * from analysis_target_item WHERE 1=1
+		<if test="targetid != '' and targetid != null"> and targetid = #{targetid} </if>
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="methodName != '' and methodName != null"> and method_name = #{methodName} </if>
+		ORDER BY sortno ASC,id ASC
+	</select>
+	<insert id="insert" parameterType="AnalysisTargetItem"><![CDATA[insert into analysis_target_item(
+id,targetid,lessonid,teacherid,method_name,weight_rate,coefficient,sortno) values (#{id},#{targetid},#{lessonid},#{teacherid},#{methodName},#{weightRate},#{coefficient},#{sortno})
+]]></insert>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from analysis_target_item WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+	</delete>
+</mapper>

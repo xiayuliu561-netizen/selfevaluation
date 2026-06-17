@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.NewsMapper">
+	<resultMap type="News" id="newsMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="type" column="type" />
+		<result property="time" column="time" />
+		<result property="images" column="images" />
+	</resultMap>
+	<select id="getList" resultType="List"  parameterType="Map" resultMap="newsMap">  
+            SELECT * FROM news where 1=1 
+           	<if test="title != '' and title != null ">
+           		and title like CONCAT('%', #{title}, '%')
+           	</if>
+           	<if test="type != '' and type != null ">
+           		and type =#{type}
+           	</if>
+	</select>
+	<delete id="delete" parameterType="String">
+		<![CDATA[
+			delete from news where id = #{id}
+		]]>
+	</delete>
+	<select id="getById" parameterType="String" resultType="News"
+		resultMap="newsMap"><![CDATA[  SELECT * from news tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="News"><![CDATA[insert into news( 
+id,title,content,type,time,images) values (#{id},#{title},#{content},#{type},#{time},#{images})
+]]></insert>
+	<update id="update" parameterType="News"><![CDATA[update news set 
+id=#{id},title=#{title},content=#{content},type=#{type},time=#{time},images=#{images} where id = #{id}
+]]></update>
+</mapper>

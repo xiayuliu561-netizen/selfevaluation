@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.AnalysisTargetMapper">
+	<resultMap type="AnalysisTarget" id="analysisTargetMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="lessonid" column="lessonid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="targetName" column="target_name" />
+		<result property="targetContent" column="target_content" />
+		<result property="targetrate" column="targetrate" />
+		<result property="sortno" column="sortno" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="analysisTargetMap">
+		SELECT * from analysis_target WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="targetName != '' and targetName != null"> and target_name = #{targetName} </if>
+		ORDER BY sortno ASC,id ASC
+	</select>
+	<insert id="insert" parameterType="AnalysisTarget" useGeneratedKeys="true" keyProperty="id"><![CDATA[insert into analysis_target(
+id,lessonid,teacherid,target_name,target_content,targetrate,sortno) values (#{id},#{lessonid},#{teacherid},#{targetName},#{targetContent},#{targetrate},#{sortno})
+]]></insert>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from analysis_target WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+	</delete>
+</mapper>

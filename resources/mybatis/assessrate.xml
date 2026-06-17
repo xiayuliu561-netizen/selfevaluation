@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.AssessrateMapper">
+	<resultMap type="Assessrate" id="assessrateMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="targetname" column="targetname" />
+		<result property="rate1" column="rate1" />
+		<result property="rate2" column="rate2" />
+		<result property="rate3" column="rate3" />
+		<result property="rate4" column="rate4" />
+		<result property="rate5" column="rate5" />
+		<result property="rate6" column="rate6" />
+		<result property="targetrate" column="targetrate" />
+		<result property="remarks" column="remarks" />
+		<result property="lessonid" column="lessonid" />
+		<association property="lesson" column="lessonid" select="getlesson" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{lessonid} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="assessrateMap">
+		SELECT * from assessrate WHERE 1=1
+		<if test="userid != '' and userid != null"> and userid = #{userid} </if>
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="targetname != '' and targetname != null"> and targetname LIKE
+			CONCAT(CONCAT('%', #{targetname}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="Assessrate"
+		resultMap="assessrateMap"><![CDATA[  SELECT * from assessrate tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Assessrate"><![CDATA[insert into assessrate( 
+id,userid,targetname,rate1,rate2,rate3,rate4,rate5,rate6,remarks,targetrate,lessonid) values (#{id},#{userid},#{targetname},#{rate1},#{rate2},#{rate3},#{rate4},#{rate5},#{rate6},#{remarks},#{targetrate},#{lessonid})
+]]></insert>
+	<update id="update" parameterType="Assessrate"><![CDATA[update assessrate set 
+id=#{id},userid=#{userid},targetname=#{targetname},rate1=#{rate1},rate2=#{rate2},rate3=#{rate3},rate4=#{rate4},rate5=#{rate5},rate6=#{rate6},remarks=#{remarks},targetrate=#{targetrate},lessonid=#{lessonid} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from assessrate  WHERE id = #{id} ]]></delete>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from assessrate WHERE 1=1
+		<if test="userid != '' and userid != null"> and userid = #{userid} </if>
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+	</delete>
+</mapper>

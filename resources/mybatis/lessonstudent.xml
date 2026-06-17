@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.LessonStudentMapper">
+	<resultMap type="LessonStudent" id="lessonStudentMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="lessonid" column="lessonid" />
+		<result property="userid" column="userid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="createtime" column="createtime" />
+		<association property="user" column="userid" select="getuser" />
+		<association property="lesson" column="lessonid" select="getlesson" />
+	</resultMap>
+	<select id="getuser" parameterType="String" resultType="com.mywork.bean.User">
+		<![CDATA[ SELECT * from user tmp WHERE tmp.id = #{userid} ]]>
+	</select>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[ SELECT * from lesson tmp WHERE tmp.id = #{lessonid} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="lessonStudentMap">
+		SELECT ls.* from lesson_student ls
+		left join user u on ls.userid = u.id
+		WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and ls.lessonid = #{lessonid} </if>
+		<if test="userid != '' and userid != null"> and ls.userid = #{userid} </if>
+		<if test="teacherid != '' and teacherid != null"> and ls.teacherid = #{teacherid} </if>
+		ORDER BY u.no ASC, ls.id ASC
+	</select>
+	<insert id="insert" parameterType="LessonStudent"><![CDATA[insert into lesson_student(
+id,lessonid,userid,teacherid,createtime) values (#{id},#{lessonid},#{userid},#{teacherid},#{createtime})
+]]></insert>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from lesson_student WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+	</delete>
+</mapper>

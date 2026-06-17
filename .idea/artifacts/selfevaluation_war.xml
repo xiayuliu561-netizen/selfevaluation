@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="selfevaluation:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/selfevaluation_war</output-path>
+    <root id="archive" name="selfevaluation_war.war">
+      <element id="artifact" artifact-name="selfevaluation:war exploded" />
+    </root>
+  </artifact>
+</component>

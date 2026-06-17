@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.QuestionMapper">
+	<resultMap type="Question" id="questionMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="surveyId" column="survey_id" />
+		<result property="surveyName" column="survey_name" />
+		<result property="surveyDesc" column="survey_desc" />
+		<result property="sortno" column="sortno" />
+		<result property="optionCount" column="option_count" />
+		<result property="title" column="title" />
+		<result property="name" column="name" />
+		<result property="option1" column="option1" />
+		<result property="option2" column="option2" />
+		<result property="option3" column="option3" />
+		<result property="option4" column="option4" />
+		<result property="option5" column="option5" />
+		<result property="option6" column="option6" />
+		<result property="option7" column="option7" />
+		<result property="option8" column="option8" />
+		<result property="option1score" column="option1score" />
+		<result property="option2score" column="option2score" />
+		<result property="option3score" column="option3score" />
+		<result property="option4score" column="option4score" />
+		<result property="option5score" column="option5score" />
+		<result property="option6score" column="option6score" />
+		<result property="option7score" column="option7score" />
+		<result property="option8score" column="option8score" />
+		<result property="type" column="type" />
+		<result property="secondtype" column="secondtype" />
+		<result property="lessonid" column="secondtype" />
+		<association property="lesson" column="secondtype" select="getlesson" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{secondtype} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="questionMap">
+		SELECT * from question WHERE 1=1
+		<if test="type != '' and type != null"> and type = #{type} </if>
+		<if test="secondtype != '' and secondtype != null"> and secondtype = #{secondtype} </if>
+		<if test="lessonid != '' and lessonid != null"> and secondtype = #{lessonid} </if>
+		<if test="surveyId != null"> and survey_id = #{surveyId} </if>
+		<if test="username != '' and username != null"> and username = #{username} </if>
+		<if test="surveyName != '' and surveyName != null"> and survey_name LIKE
+			CONCAT(CONCAT('%', #{surveyName}), '%') </if>
+		<if test="title != '' and title != null"> and title LIKE
+			CONCAT(CONCAT('%', #{title}), '%') </if>
+		ORDER BY secondtype asc, IFNULL(survey_id,0) asc, IFNULL(sortno,id) asc, id asc
+	</select>
+	<select id="getById" parameterType="String" resultType="Question"
+		resultMap="questionMap"><![CDATA[  SELECT * from question tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Question"><![CDATA[insert into question( 
+id,survey_id,survey_name,survey_desc,sortno,option_count,title,option1,option2,option3,option4,option5,option6,option7,option8,option1score,option2score,option3score,option4score,option5score,option6score,option7score,option8score,type,secondtype) values (#{id},#{surveyId},#{surveyName},#{surveyDesc},#{sortno},#{optionCount},#{title},#{option1},#{option2},#{option3},#{option4},#{option5},#{option6},#{option7},#{option8},#{option1score},#{option2score},#{option3score},#{option4score},#{option5score},#{option6score},#{option7score},#{option8score},#{type},#{secondtype})
+]]></insert>
+	<update id="update" parameterType="Question"><![CDATA[update question set 
+survey_id=#{surveyId},survey_name=#{surveyName},survey_desc=#{surveyDesc},sortno=#{sortno},option_count=#{optionCount},title=#{title},option1=#{option1},option2=#{option2},option3=#{option3},option4=#{option4},option5=#{option5},option6=#{option6},option7=#{option7},option8=#{option8},option1score=#{option1score},option2score=#{option2score},option3score=#{option3score},option4score=#{option4score},option5score=#{option5score},option6score=#{option6score},option7score=#{option7score},option8score=#{option8score},type=#{type},secondtype=#{secondtype} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from question  WHERE id = #{id} ]]></delete>
+</mapper>

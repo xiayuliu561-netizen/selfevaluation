@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.SystemStatisticsMapper">
+	<resultMap type="SystemStatistics" id="systemStatisticsMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="statKey" column="stat_key" />
+		<result property="statValue" column="stat_value" />
+		<result property="description" column="description" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	<insert id="insertGradeServiceCountIfMissing">
+		INSERT IGNORE INTO system_statistics(stat_key, stat_value, description)
+		VALUES('grade_service_count', 0, '累计成功处理成绩的学生人次')
+	</insert>
+	<select id="getGradeServiceCount" resultType="long">
+		SELECT stat_value FROM system_statistics WHERE stat_key = 'grade_service_count'
+	</select>
+	<update id="incrementGradeServiceCount" parameterType="Map">
+		UPDATE system_statistics
+		SET stat_value = stat_value + #{amount}
+		WHERE stat_key = 'grade_service_count'
+	</update>
+	<select id="getByKey" parameterType="String" resultType="SystemStatistics" resultMap="systemStatisticsMap">
+		SELECT * FROM system_statistics WHERE stat_key = #{statKey}
+	</select>
+</mapper>

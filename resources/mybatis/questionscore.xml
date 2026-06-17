@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.QuestionscoreMapper">
+	<resultMap type="Questionscore" id="questionscoreMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="lesson" column="lesson" />
+		<result property="surveyId" column="survey_id" />
+		<result property="questionid" column="questionid" />
+		<result property="option1score" column="option1score" />
+		<result property="option2score" column="option2score" />
+		<result property="option3score" column="option3score" />
+		<result property="option4score" column="option4score" />
+		<result property="option5score" column="option5score" />
+		<result property="option6score" column="option6score" />
+		<result property="avgscore" column="avgscore" />
+		<association property="lessonentity" column="lesson" select="getlesson" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{lesson} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="questionscoreMap">
+		SELECT * from questionscore WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid =
+			#{teacherid} </if>
+		<if test="userid != '' and userid != null"> and userid =
+			#{userid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson =
+			#{lesson} </if>
+		<if test="surveyId != null"> and survey_id =
+			#{surveyId} </if>
+		<if test="surveyIdNull != '' and surveyIdNull != null"> and survey_id is null </if>
+		<if test="name != '' and name != null"> and name LIKE
+			CONCAT(CONCAT('%', #{name}), '%') </if>
+	</select>
+	<select id="getAvgList" parameterType="Map" resultType="List" resultMap="questionscoreMap">
+		SELECT userid,teacherid,lesson,survey_id,avg(avgscore) avgscore from questionscore WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid =
+			#{teacherid} </if>
+		<if test="userid != '' and userid != null"> and userid =
+			#{userid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson =
+			#{lesson} </if>
+		<if test="surveyId != null"> and survey_id =
+			#{surveyId} </if>
+		<if test="surveyIdNull != '' and surveyIdNull != null"> and survey_id is null </if>
+		group by userid,teacherid,lesson,survey_id
+	</select>
+	<select id="getById" parameterType="String" resultType="Questionscore"
+		resultMap="questionscoreMap"><![CDATA[  SELECT * from questionscore tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Questionscore"><![CDATA[insert into questionscore( 
+id,userid,teacherid,lesson,survey_id,questionid,option1score,option2score,option3score,option4score,option5score,option6score,avgscore) values (#{id},#{userid},#{teacherid},#{lesson},#{surveyId},#{questionid},#{option1score},#{option2score},#{option3score},#{option4score},#{option5score},#{option6score},#{avgscore})
+]]></insert>
+	<update id="update" parameterType="Questionscore"><![CDATA[update questionscore set 
+id=#{id},userid=#{userid},teacherid=#{teacherid},lesson=#{lesson},survey_id=#{surveyId},questionid=#{questionid},option1score=#{option1score},option2score=#{option2score},option3score=#{option3score},option4score=#{option4score},option5score=#{option5score},option6score=#{option6score},avgscore=#{avgscore} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from questionscore  WHERE teacherid = #{teacherid} ]]></delete>
+	<delete id="deleteBySurvey" parameterType="Map">
+		delete from questionscore WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson = #{lesson} </if>
+		<if test="surveyId != null"> and survey_id = #{surveyId} </if>
+		<if test="surveyIdNull != '' and surveyIdNull != null"> and survey_id is null </if>
+	</delete>
+</mapper>

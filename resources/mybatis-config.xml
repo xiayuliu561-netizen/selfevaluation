@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<!-- changes from the defaults -->
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="User" type="com.mywork.bean.User" />
+		<typeAlias alias="College" type="com.mywork.bean.College" />
+		<typeAlias alias="Dept" type="com.mywork.bean.Dept" />
+		<typeAlias alias="News" type="com.mywork.bean.News" />
+		<typeAlias alias="Rate" type="com.mywork.bean.Rate" />
+		<typeAlias alias="Score" type="com.mywork.bean.Score" />
+		<typeAlias alias="Sumscore" type="com.mywork.bean.Sumscore" />
+		<typeAlias alias="Assessrate" type="com.mywork.bean.Assessrate" />
+		<typeAlias alias="Reports" type="com.mywork.bean.Reports" />
+		<typeAlias alias="Question" type="com.mywork.bean.Question" />
+		<typeAlias alias="Questionscore" type="com.mywork.bean.Questionscore" />
+		<typeAlias alias="Lesson" type="com.mywork.bean.Lesson" />
+		<typeAlias alias="AiModel" type="com.mywork.bean.AiModel" />
+		<typeAlias alias="LessonStudent" type="com.mywork.bean.LessonStudent" />
+		<typeAlias alias="AnalysisComponent" type="com.mywork.bean.AnalysisComponent" />
+		<typeAlias alias="AnalysisTarget" type="com.mywork.bean.AnalysisTarget" />
+		<typeAlias alias="AnalysisTargetItem" type="com.mywork.bean.AnalysisTargetItem" />
+		<typeAlias alias="ScoreDetail" type="com.mywork.bean.ScoreDetail" />
+		<typeAlias alias="ScoreImportItem" type="com.mywork.bean.ScoreImportItem" />
+		<typeAlias alias="ScoreImportPreview" type="com.mywork.bean.ScoreImportPreview" />
+		<typeAlias alias="ScoreImportResult" type="com.mywork.bean.ScoreImportResult" />
+		<typeAlias alias="SystemStatistics" type="com.mywork.bean.SystemStatistics" />
+	</typeAliases>
+</configuration>  

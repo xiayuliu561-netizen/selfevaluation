@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.LessonMapper">
+	<resultMap type="Lesson" id="lessonMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="name" column="name" />
+		<result property="time" column="time" />
+		<result property="room" column="room" />
+		<result property="beginend" column="beginend" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="lessonMap">
+		SELECT * from lesson WHERE 1=1
+		<if test="userid != '' and userid != null"> and userid =
+			#{userid} </if>
+		<if test="name != '' and name != null"> and name LIKE
+			CONCAT(CONCAT('%', #{name}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="Lesson"
+		resultMap="lessonMap"><![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Lesson"><![CDATA[insert into lesson( 
+id,userid,name,time,room,beginend) values (#{id},#{userid},#{name},#{time},#{room},#{beginend})
+]]></insert>
+	<update id="update" parameterType="Lesson"><![CDATA[update lesson set 
+id=#{id},userid=#{userid},name=#{name},time=#{time},room=#{room},beginend=#{beginend} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from lesson  WHERE id = #{id} ]]></delete>
+</mapper>

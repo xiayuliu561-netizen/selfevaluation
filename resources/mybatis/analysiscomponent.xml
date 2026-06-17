@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.AnalysisComponentMapper">
+	<resultMap type="AnalysisComponent" id="analysisComponentMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="lessonid" column="lessonid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="componentName" column="component_name" />
+		<result property="rate" column="rate" />
+		<result property="sortno" column="sortno" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="analysisComponentMap">
+		SELECT * from analysis_component WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="componentName != '' and componentName != null"> and component_name = #{componentName} </if>
+		ORDER BY sortno ASC,id ASC
+	</select>
+	<insert id="insert" parameterType="AnalysisComponent"><![CDATA[insert into analysis_component(
+id,lessonid,teacherid,component_name,rate,sortno) values (#{id},#{lessonid},#{teacherid},#{componentName},#{rate},#{sortno})
+]]></insert>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from analysis_component WHERE 1=1
+		<if test="lessonid != '' and lessonid != null"> and lessonid = #{lessonid} </if>
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+	</delete>
+</mapper>

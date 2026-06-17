@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.DeptMapper">
+	<resultMap type="Dept" id="deptMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="collegeId" column="college_id" />
+		<result property="collegeName" column="college_name" />
+		<result property="deptName" column="dept_name" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="deptMap">
+		SELECT * from Dept WHERE 1=1
+		<if test="collegeId != '' and collegeId != null"> and college_id = #{collegeId} </if>
+		<if test="deptName != '' and deptName != null"> and dept_name LIKE
+			CONCAT(CONCAT('%', #{deptName}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="Dept"
+		resultMap="deptMap"><![CDATA[  SELECT * from Dept tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Dept"><![CDATA[insert into Dept( 
+id,college_id,college_name,dept_name) values (#{id},#{collegeId},#{collegeName},#{deptName})
+]]></insert>
+	<update id="update" parameterType="Dept"><![CDATA[update Dept set 
+id=#{id},college_id=#{collegeId},college_name=#{collegeName},dept_name=#{deptName} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from Dept  WHERE id = #{id} ]]></delete>
+</mapper>

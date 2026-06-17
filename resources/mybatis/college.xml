@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.CollegeMapper">
+	<resultMap type="College" id="collegeMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="collegeName" column="college_name" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="collegeMap">
+		SELECT * from college WHERE 1=1
+		<if test="username != '' and username != null"> and username =
+			#{username} </if>
+		<if test="collegeName != '' and collegeName != null"> and college_name LIKE
+			CONCAT(CONCAT('%', #{collegeName}), '%') </if>
+	</select>
+	<select id="getById" parameterType="String" resultType="College"
+		resultMap="collegeMap"><![CDATA[  SELECT * from college tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="College"><![CDATA[insert into college( 
+id,college_name) values (#{id},#{collegeName})
+]]></insert>
+	<update id="update" parameterType="College"><![CDATA[update college set 
+id=#{id},college_name=#{collegeName} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from college  WHERE id = #{id} ]]></delete>
+</mapper>

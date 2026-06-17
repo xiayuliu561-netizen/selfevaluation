@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.AiModelMapper">
+	<resultMap type="AiModel" id="aiModelMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="provider" column="provider" />
+		<result property="modelName" column="model_name" />
+		<result property="apiUrl" column="api_url" />
+		<result property="apiKey" column="api_key" />
+		<result property="enabled" column="enabled" />
+		<result property="isDefault" column="is_default" />
+		<result property="remarks" column="remarks" />
+		<result property="createtime" column="createtime" />
+	</resultMap>
+	<select id="getList" parameterType="Map" resultType="List" resultMap="aiModelMap">
+		SELECT * from ai_model WHERE 1=1
+		<if test="queryname != '' and queryname != null">
+			and (provider = #{queryname} or model_name = #{queryname})
+		</if>
+		ORDER BY is_default DESC, id DESC
+	</select>
+	<select id="getById" parameterType="String" resultType="AiModel"
+		resultMap="aiModelMap"><![CDATA[  SELECT * from ai_model tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<select id="getActiveModel" resultType="AiModel" resultMap="aiModelMap">
+		SELECT * from ai_model WHERE enabled = '1'
+		ORDER BY is_default DESC, id DESC
+		LIMIT 1
+	</select>
+	<insert id="insert" parameterType="AiModel"><![CDATA[insert into ai_model(
+id,provider,model_name,api_url,api_key,enabled,is_default,remarks,createtime) values (#{id},#{provider},#{modelName},#{apiUrl},#{apiKey},#{enabled},#{isDefault},#{remarks},#{createtime})
+]]></insert>
+	<update id="update" parameterType="AiModel"><![CDATA[update ai_model set
+id=#{id},provider=#{provider},model_name=#{modelName},api_url=#{apiUrl},api_key=#{apiKey},enabled=#{enabled},is_default=#{isDefault},remarks=#{remarks} where id = #{id}
+]]></update>
+	<update id="clearDefault" parameterType="Integer">
+		update ai_model set is_default='0'
+		<if test="_parameter != null">
+			where id != #{_parameter}
+		</if>
+	</update>
+	<update id="clearEnabled" parameterType="Integer">
+		update ai_model set enabled='0'
+		<if test="_parameter != null">
+			where id != #{_parameter}
+		</if>
+	</update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from ai_model WHERE id = #{id} ]]></delete>
+</mapper>

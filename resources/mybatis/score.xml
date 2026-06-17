@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mywork.mapper.ScoreMapper">
+	<resultMap type="Score" id="scoreMap">
+		<id property="id" column="id" />
+		<result property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="teacherid" column="teacherid" />
+		<result property="lesson" column="lesson" />
+		<result property="show" column="show1" />
+		<result property="homework" column="homework" />
+		<result property="test" column="test1" />
+		<result property="design" column="design" />
+		<result property="middle" column="middle" />
+		<result property="end" column="end1" />
+		<result property="createdate" column="createdate" />
+		<association property="lessonentity" column="lesson" select="getlesson" />
+		<association property="teacher" column="teacherid" select="getuser" />
+	</resultMap>
+	<select id="getlesson" parameterType="String" resultType="com.mywork.bean.Lesson">
+		<![CDATA[  SELECT * from lesson tmp WHERE tmp.id = #{lesson} ]]>
+	</select>
+	<select id="getuser" parameterType="String" resultType="com.mywork.bean.User">
+		<![CDATA[  SELECT * from user tmp WHERE tmp.id = #{teacherid} ]]>
+	</select>
+	<select id="getList" parameterType="Map" resultType="List"
+		resultMap="scoreMap">
+		SELECT * from score WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="userid != '' and userid != null"> and userid = #{userid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson = #{lesson} </if>
+		<if test="name != '' and name != null"> and name LIKE
+			CONCAT(CONCAT('%', #{name}), '%') </if>
+	</select>
+	<select id="getDictinctList" parameterType="Map" resultType="List" resultMap="scoreMap">
+		select distinct teacherid,lesson,concat(teacherid,',',lesson) queryid from score where userid = #{userid}
+	</select>
+	<select id="getById" parameterType="String" resultType="Score"
+		resultMap="scoreMap"><![CDATA[  SELECT * from score tmp WHERE tmp.id = #{id} ]]>
+	</select>
+	<insert id="insert" parameterType="Score"><![CDATA[insert into score( 
+id,userid,teacherid,lesson,show1,homework,test1,design,middle,end1,createdate) values (#{id},#{userid},#{teacherid},#{lesson},#{show},#{homework},#{test},#{design},#{middle},#{end},#{createdate})
+]]></insert>
+	<update id="update" parameterType="Score"><![CDATA[update score set 
+id=#{id},userid=#{userid},teacherid=#{teacherid},lesson=#{lesson},show1=#{show},homework=#{homework},test1=#{test},design=#{design},middle=#{middle},end1=#{end},createdate=#{createdate} where id = #{id}
+]]></update>
+	<delete id="delete" parameterType="String"><![CDATA[ delete from score  WHERE teacherid = #{teacherid} ]]></delete>
+	<delete id="deleteByLesson" parameterType="Map">
+		delete from score WHERE 1=1
+		<if test="teacherid != '' and teacherid != null"> and teacherid = #{teacherid} </if>
+		<if test="lesson != '' and lesson != null"> and lesson = #{lesson} </if>
+		<if test="userid != '' and userid != null"> and userid = #{userid} </if>
+	</delete>
+</mapper>
